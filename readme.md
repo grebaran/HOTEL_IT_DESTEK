@@ -3,7 +3,7 @@
 ## Proje Özeti
 Otel operasyonlarında, özellikle yoğun sezonlarda veya yeni açılış (pre-opening) süreçlerinde departmanlar arası teknik iletişimi toparlamak için geliştirdiğim Telegram tabanlı bir arıza takip ve görev (ticket) yönetim sistemidir. Telsiz trafiğini azaltarak tüm teknik servis taleplerini dijital bir veritabanında saat ve kişi bazlı kayıt altına alır.
 
-<img width="200" height="2048" alt="bilgi_ekranı" src="https://github.com/user-attachments/assets/985c7883-f689-4df3-8855-33c5ba0c0bc8"/>
+<img width="%35" height="2048" alt="bilgi_ekranı" src="https://github.com/user-attachments/assets/985c7883-f689-4df3-8855-33c5ba0c0bc8"/>
 
 
 
