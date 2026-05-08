@@ -2,6 +2,8 @@
 
 ## Proje Özeti
 Otel operasyonlarında, özellikle yoğun sezonlarda veya yeni açılış (pre-opening) süreçlerinde departmanlar arası teknik iletişimi toparlamak için geliştirdiğim Telegram tabanlı bir arıza takip ve görev (ticket) yönetim sistemidir. Telsiz trafiğini azaltarak tüm teknik servis taleplerini dijital bir veritabanında saat ve kişi bazlı kayıt altına alır.
+<img width="1080" height="1744" alt="çalışma_kodları" src="https://github.com/user-attachments/assets/3d337fb3-071b-4e75-84c8-379638e658f6" />
+<img width="978" height="2048" alt="bilgi_ekranı" src="https://github.com/user-attachments/assets/985c7883-f689-4df3-8855-33c5ba0c0bc8" />
 
 ## Neden Böyle Bir Programa İhtiyaç Var?
 Otelcilikte klasik bir kaos vardır: Kat görevlisi (Housekeeping) veya resepsiyon, odadaki bir arızayı teknik servise telsizden veya WhatsApp gruplarından yazar. Teknik personel o an başka bir işte olduğu için "tamam" der ama yoğunluktan unutulur. Akşam odaya giriş yapan misafir klimanın çalışmadığını veya TV'nin bozuk olduğunu görünce şikayet eder. 
@@ -40,3 +42,5 @@ Program çalıştıktan sonra otel personeli hiçbir ekstra uygulama indirmeden 
   Teknik personel 105 numaralı odadaki arızayı giderdiğinde bota `/cozuldu 1` (1 numaralı ID) yazar. Sorun loglardan silinmez ancak durumu "ÇÖZÜLDÜ" olarak güncellenir.
 * **Yönetici Raporu Almak İçin:**
   Otel müdürü operasyon toplantısından önce bota sadece `/rapor` yazar. Bot, o haftaya ait tüm veritabanını, kimin hangi arızayı kaç dakikada çözdüğünü hesaplayıp anında temiz bir Excel (.xlsx) dosyası olarak müdürün telefonuna gönderir.
+
+
