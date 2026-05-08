@@ -2,11 +2,13 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 
+# Gömülü veritabanımız. Koca SQL server kurmakla, lisansla falan uğraşmayalım diye SQLite candır.
 DB_NAME = "hotel_data.db"
 
 
 def init_db():
-    """Veritabanını ve gerekli tabloları sıfırdan oluşturur."""
+    # Veritabanını ve gerekli tabloları ilk açılışta sıfırdan kuruyoruz.
+    # "Telsizden söyledim" devrini bitirip her şeyi loglayacağımız ana tablo burası.
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("""
@@ -25,22 +27,26 @@ def init_db():
 
 
 def add_fault(room_no, issue, reported_by):
-    """Sisteme yeni bir arıza kaydı ekler."""
+    # Sisteme yeni bir arıza geldiğinde DB'ye zımbaladığımız yer.
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
+    
+    # Saati saniyesine kadar alıyoruz ki kimse "ben sabahtan söylemiştim, teknik ekip gelmedi" demesin.
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute(
         "INSERT INTO faults (room_no, issue, reported_by, reported_at) VALUES (?, ?, ?, ?)",
         (room_no, issue, reported_by, now)
     )
     conn.commit()
+    
+    # Eklediğimiz arızanın ticket numarasını (ID) geri döndürüyoruz.
     fault_id = cursor.lastrowid
     conn.close()
     return fault_id
 
 
 def get_open_faults():
-    """Henüz çözülmemiş (AÇIK) arızaları listeler."""
+    # Sadece kırmızı olanları, yani IT ve teknik servisin başındaki mevcut dertleri listeler.
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT id, room_no, issue, reported_at FROM faults WHERE status='AÇIK 🔴'")
@@ -50,14 +56,17 @@ def get_open_faults():
 
 
 def mark_resolved(fault_id):
-    """Belirtilen ID'ye sahip arızayı 'ÇÖZÜLDÜ' olarak işaretler."""
+    # İşi biten arızayı yeşile boyayıp çözüm saatini mühürlüyoruz.
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
+    
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute(
         "UPDATE faults SET status='ÇÖZÜLDÜ 🟢', resolved_at=? WHERE id=? AND status='AÇIK 🔴'",
         (now, fault_id)
     )
+    
+    # Eğer satır başarıyla güncellendiyse (yani böyle açık bir arıza cidden varsa) True döner.
     rows_affected = cursor.rowcount
     conn.commit()
     conn.close()
@@ -65,12 +74,13 @@ def mark_resolved(fault_id):
 
 
 def export_to_excel(filename="otel_ariza_raporu.xlsx"):
-    """Tüm veritabanını yöneticiler için şık bir Excel (.xlsx) dosyasına dönüştürür."""
+    # Müdürün şov kısmı! Pandas kütüphanesiyle tüm veritabanını çekip direkt Excel'e basıyoruz.
     conn = sqlite3.connect(DB_NAME)
     df = pd.read_sql_query("SELECT * FROM faults", conn)
     conn.close()
 
-    # Sütun isimlerini Türkçeleştirip güzelleştirelim
+    # Excel sütunları veritabanındaki gibi ingilizce (room_no falan) kalmasın. 
+    # Yönetimin okuyacağı şekilde Türkçeleştirip jilet gibi yapıyoruz.
     df.rename(columns={
         'id': 'Kayıt No',
         'room_no': 'Oda / Konum',
